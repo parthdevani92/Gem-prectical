@@ -1,0 +1,36 @@
+<table class='table'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Deleted by</th>
+      <th>At</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @posts.each do |post_version| %>
+      <%- post = post_version.reify %>
+      <tr>
+        <td><%= post.id %></td>
+        <td><%= post.title %></td>
+        <td><%= post.body %></td>
+        <td><%= post.user.email%></td>
+        <td><%= post.created_at %></td>
+        <td><%= link_to 'Bringback', bringback_version_path(post_version), method: 'PATCH' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<%= link_to 'Back', posts_path %>
+ 
+
+And finally, a link to access this view!
+
+# app/views/posts/index.html.erb
+...
+<%= link_to 'See Deleted posts', deleted_posts_path %>
+<br/>
+<%= link_to 'New post', new_post_path %>

@@ -1,0 +1,20 @@
+<style><%= Diffy::CSS %></style>
+<%         changes = Diffy::Diff.new('content1', 'content2', 
+include_plus_and_minus_in_html: true, 
+include_diff_info: true) %>
+<br/>
+<%=
+changes.to_s.present? ? changes.to_s(:html).html_safe : 'No Changes' %>
+
+
+
+
+<br/><br/>
+<%= changes = Diffy::SplitDiff.new('Hello how are you  Im fine', 'how are you  Im fine', :format => :html).left.html_safe  %>
+<br/><br/>
+<%= changes = Diffy::SplitDiff.new('Hello how are you  Im fine', 'how are you  Im fine', :format => :html).right.html_safe  %>
+
+<br/><br/>
+<%= Diffy::Diff.new("foo\nbar\n", "foo\nbar\nbaz\n", :include_diff_info => true).to_s(:text) %>
+<br/><br/>
+<%=  Diffy::Diff.new("I'm fine", "Hello how are you \nI'm fine \nThat's great", :include_plus_and_minus_in_html => true, :context => 1).to_s(:html_simple).html_safe  %>

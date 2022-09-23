@@ -1,0 +1,23 @@
+<div class='row mt'>
+  <div class='col-sm-12'>
+    <h2><%= "Diff between Version #{@version.id} and Current Version" %></h2>
+    <style><%= Diffy::CSS %></style>
+    <div class='well diff'>
+      <p>
+        <strong>Name:</strong>
+        <%= diff(@version.reify.title, @post.title) %>
+      </p>
+      <p>
+        <strong>Content:</strong>
+        <%= diff(@version.reify.body, @post.body) %>
+      </p>
+    </div>
+    <p>
+    <%= "Version authored by #{@post.user.email} on #{@version.created_at} by '#{@version.event.humanize}'." %>
+    </p>
+  </div>
+</div>
+<div class='fr'>
+  <%= link_to 'Back', edit_post_path(@post), class: 'btn btn-danger' %>
+  <%= link_to 'Rollback', rollback_post_version_path(@post, @version), class: 'btn btn-primary', method: 'PATCH' %>
+</div>

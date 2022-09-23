@@ -25,8 +25,9 @@ gem 'jbuilder', '~> 2.7'
 gem 'devise'
 gem 'activeadmin'
 gem 'paper_trail'
-
-
+gem 'diffy' 
+gem 'ransack'
+gem 'rubocop', require: false
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

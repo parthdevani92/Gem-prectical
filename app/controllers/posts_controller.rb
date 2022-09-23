@@ -3,7 +3,21 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
   # GET /posts or /posts.json
   def index
-    @posts = Post.all
+    if params[:q].present?
+      puts "@@@@@@@@@@@@@@"
+      @q = Post.ransack(params[:q])
+      @posts = @q.result(distinct: true)
+    else
+      @q = Post.ransack(' ')
+      @posts = Post.all
+    end
+  end
+
+
+  def search
+    @q = Supervisor.ransack(params[:q])
+    @posts = @q.result.includes(:comments)
+    render :index
   end
 
   # GET /posts/1 or /posts/1.json
@@ -22,6 +36,7 @@ class PostsController < ApplicationController
   # POST /posts or /posts.json
   def create
     @post = Post.new(post_params)
+    @post.user = current_user
 
     respond_to do |format|
       if @post.save
@@ -32,6 +47,10 @@ class PostsController < ApplicationController
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def deleted
+    @posts = PostVersion.select('DISTINCT ON (item_type,item_id) *').where(event: 'destroy')
   end
 
   # PATCH/PUT /posts/1 or /posts/1.json

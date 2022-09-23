@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_19_051104) do
+ActiveRecord::Schema.define(version: 2022_09_19_084045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,11 +48,25 @@ ActiveRecord::Schema.define(version: 2022_09_19_051104) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "post_versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.string "author_username"
+    t.integer "word_count"
+    t.index ["item_type", "item_id"], name: "index_post_versions_on_item_type_and_item_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.text "body"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -77,4 +91,5 @@ ActiveRecord::Schema.define(version: 2022_09_19_051104) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "posts", "users"
 end
